@@ -33,64 +33,51 @@
       >
         <el-row justify="center" style="margin-top: 20px" :column="24">
           <el-col :span="6">
-            <span size="large"  type="success">小Y天气</span>
+            <img src="@/assets/imgs/0.png" class="logo" />
           </el-col>
           <el-col :span="6">
-            <span>{{weatherData.province}}-{{weatherData.city}}</span>
+            <el-icon style="font-size: 20px; "><Location /></el-icon>
+            <span class="region"> {{weatherData.province}}-{{weatherData.city}}</span>
           </el-col>
           <el-col :span="6">
-            <el-form-item>
-          <el-input
-          placeholder="请输入城市名称进行搜索"
-          style="width:230px;"
-          class="rounded-input"
-          @keyup.enter="getData(city)"
-          v-model = "city"
-          />
-            </el-form-item>
+            <el-cascader
+            class="rounded-input"
+            v-model="selectedRegion"
+            :options="regionData"
+            clearable
+            filterable
+            placeholder="请输入城市"
+            @change="limitChange"
+            @keyup.enter="getData(city)"
+            />
           </el-col>
         </el-row>
       </el-header>
       <el-main>
-        <el-row >
-          <el-col :span="16">
-            <el-row style="margin:30px 0 50px 20px;">
-              <el-col>
-                <span>中央气象台{{weatherData.reporttime}}发布</span>
+            <el-row justify="end">
+              <el-col :span="6" >
+                <span class="reportTime"> 中央气象台{{weatherData.reporttime}}发布</span>
               </el-col>
             </el-row>
-            <el-row style="margin:0px 0 30px 20px;" align="middle" justify="start" >
-              <el-col :span =3>
+            <div class="todayWeather">
+              <div class="weatherStation">  🌤 天气实况</div>
+            <el-row style="margin:20px 0 25px 0px;" align="middle" justify="center" >
+              <el-col :span=6>
               <span class="tempature">{{weatherData.temperature}}°</span>
               </el-col>
-              <el-col :span =2>
+              <el-col :span =8>
               <span class="weathers">{{weatherData.weather}}</span>
               </el-col>
-              <el-col :span =4>
-              <span class="weatherStatus">46 优</span>
+            </el-row>
+            <el-row  align="middle" justify="center" >
+              <el-col :span =6>
+              <span><wind/>💨 {{weatherData.winddirection}}风 {{weatherData.windpower}}级</span>
+              </el-col>
+              <el-col :span =6>
+              <span> 💧 {{weatherData.humidity}}%</span>
               </el-col>
             </el-row>
-            <el-row style="margin:0 20px;">
-              <el-col :span =5>
-              <span>风情：{{weatherData.winddirection}} {{weatherData.windpower}}级</span>
-              </el-col>
-              <el-col :span =3>
-              <span> 湿度: {{weatherData.humidity}}%</span>
-              </el-col>
-              <el-col :span =4>
-              <span>气压: 968hPa</span>
-              </el-col>
-              <el-col :span =4>
-              <span>车辆限行: 1和6</span>
-              </el-col>
-            </el-row>
-          </el-col>
-          <el-col :span="8">
-            <el-row style="margin:50px 0 50px 20px;">
-             <span>天气图片</span>
-            </el-row>
-          </el-col>
-        </el-row>
+          </div>
       </el-main>
       <el-footer>
         <el-row justify="center">
@@ -107,8 +94,11 @@
 <script setup lang="ts">
 import {ref,reactive, onMounted} from 'vue'
 import { getWeatherStation } from '@/api/weather';
+import { regionData } from 'element-china-area-data'
+import { Location } from '@element-plus/icons-vue'
 
 const city = ref('110101')
+const selectedRegion = ref([])
 
 let weatherData = reactive({
   province:undefined,
@@ -124,6 +114,12 @@ let weatherData = reactive({
   humidity_float:undefined,
 })
 
+const limitChange =async (value) =>{
+
+  city.value = value[value.length -1]
+   console.log('city',city.value)
+  await getData(city.value)
+}
 
 const getData = async(city:string) =>{
   const res = await getWeatherStation(city)
@@ -152,9 +148,17 @@ onMounted(async()=>{
 #cccc{
   color:white;
 }
-.rounded-input::v-deep(.el-input__wrapper) {
-  border-radius: 20px; /* 控制圆角 */
+:deep(.rounded-input .el-input__wrapper) {
+  border-radius: 20px;
+  padding: 4px 14px;
+  border: 1px solid #dcdfe6;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
 }
+:deep(.rounded-input .el-input__wrapper:hover) {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .tempature{
   font-size: 80px;
 }
@@ -163,5 +167,46 @@ onMounted(async()=>{
 }
 .weatherStatus{
   font-size:15px;
+}
+.region{
+  font-size:24px;
+  margin:0 0 0 5px;
+  color: #fff;
+}
+
+.reportTime{
+  font-size: 15px;
+  color: #999;
+}
+.logo{
+  width: 156px;
+  height: 37px;
+}
+.todayWeather {
+  background-color: #98d5f2;
+  width: 50%;
+  height: 30%;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.todayWeather:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.weatherStation {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 12px;
+  cursor: default;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  position: relative;
+}
+.weatherStation:hover {
+  transform: scale(1.1);
 }
 </style>
