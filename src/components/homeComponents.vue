@@ -1,5 +1,5 @@
 <template>
-  <div class="page-background">
+  <div class="page-background" >
   <el-container height="600px">
     <el-aside width="15%" style="background-color: #545c64; height: 100%">
       <el-menu>
@@ -22,7 +22,7 @@
         <el-menu-item>我的</el-menu-item>
       </el-menu>
     </el-aside>
-    <el-container id="cccc">
+    <el-container id="cccc" >
       <el-header
         height="100px"
         style="
@@ -33,7 +33,7 @@
       >
         <el-row justify="center" style="margin-top: 20px" :column="24">
           <el-col :span="6">
-            <img src="@/assets/imgs/0.png" class="logo" />
+            <span class="logo">🌤 小Y天气</span>
           </el-col>
           <el-col :span="6">
             <el-icon style="font-size: 20px; "><Location /></el-icon>
@@ -48,18 +48,17 @@
             filterable
             placeholder="请输入城市"
             @change="limitChange"
-            @keyup.enter="getData(city)"
             />
           </el-col>
         </el-row>
       </el-header>
-      <el-main>
+      <el-main v-loading="fullscreenLoading" >
             <el-row justify="end">
-              <el-col :span="6" >
-                <span class="reportTime"> 中央气象台{{weatherData.reporttime}}发布</span>
+              <el-col :span="4" >
+                <span class="reportTime"> 中央气象台{{formattedTime}}发布</span>
               </el-col>
             </el-row>
-            <div class="todayWeather">
+            <div class="todayWeather" >
               <div class="weatherStation">  🌤 天气实况</div>
             <el-row style="margin:20px 0 25px 0px;" align="middle" justify="center" >
               <el-col :span=6>
@@ -92,13 +91,16 @@
 </template>
 
 <script setup lang="ts">
-import {ref,reactive, onMounted} from 'vue'
+import {ref,reactive, onMounted,computed} from 'vue'
 import { getWeatherStation } from '@/api/weather';
 import { regionData } from 'element-china-area-data'
 import { Location } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import dayjs from 'dayjs';
 
-const city = ref('110101')
+const city = ref('610116')
 const selectedRegion = ref([])
+const fullscreenLoading = ref(false)
 
 let weatherData = reactive({
   province:undefined,
@@ -114,6 +116,10 @@ let weatherData = reactive({
   humidity_float:undefined,
 })
 
+const formattedTime =computed(() =>{
+  return dayjs(weatherData.reporttime).format('HH:mm')
+})
+
 const limitChange =async (value) =>{
 
   city.value = value[value.length -1]
@@ -122,6 +128,8 @@ const limitChange =async (value) =>{
 }
 
 const getData = async(city:string) =>{
+  try{
+  fullscreenLoading.value = true
   const res = await getWeatherStation(city)
   const data = res.data.lives[0]
   console.log("data",res.data.lives[0])
@@ -129,6 +137,13 @@ const getData = async(city:string) =>{
   // weatherData = {...res.data.lives[0]}
   Object.assign(weatherData,data)
   console.log('weatherData.city',weatherData.city)
+  }catch(error){
+    ElMessage.error("获取天气数据失败，请稍后再试")
+
+  }
+  finally{
+    fullscreenLoading.value = false
+  }
 }
 
 
@@ -178,10 +193,35 @@ onMounted(async()=>{
   font-size: 15px;
   color: #999;
 }
-.logo{
-  width: 156px;
-  height: 37px;
+.logo {
+  font-size: 30px;
+  font-weight: bold;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    inset 0 0 6px rgba(255, 255, 255, 0.2);
+  text-shadow: 0 0 6px rgba(0, 200, 255, 0.6);
+  transition: all 0.3s ease;
+  user-select: none;
+  cursor: default;
 }
+
+.logo:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 6px 12px rgba(0, 0, 0, 0.3),
+    inset 0 0 8px rgba(0, 200, 255, 0.4);
+}
+
+
+
+
+
 .todayWeather {
   background-color: #98d5f2;
   width: 50%;
