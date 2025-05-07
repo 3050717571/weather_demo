@@ -1,27 +1,6 @@
 <template>
   <div class="page-background" >
   <el-container height="600px">
-    <el-aside width="15%" style="background-color: #545c64; height: 100%">
-      <el-menu>
-        <el-menu-item>首页</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-        <el-menu-item>我的</el-menu-item>
-      </el-menu>
-    </el-aside>
     <el-container id="cccc" >
       <el-header
         height="100px"
@@ -29,7 +8,6 @@
         border-radius: 6px;
         border-bottom:1px white solid ;
         "
-
       >
         <el-row justify="center" style="margin-top: 20px" :column="24">
           <el-col :span="6">
@@ -48,11 +26,13 @@
             filterable
             placeholder="请输入城市"
             @change="limitChange"
+            :show-all-levels="false"
             />
           </el-col>
         </el-row>
       </el-header>
-      <el-main v-loading="fullscreenLoading" >
+      <el-main v-loading="fullscreenLoading"
+      >
             <el-row justify="end">
               <el-col :span="4" >
                 <span class="reportTime"> 中央气象台{{formattedTime}}发布</span>
@@ -70,18 +50,23 @@
             </el-row>
             <el-row  align="middle" justify="center" >
               <el-col :span =6>
-              <span><wind/>💨 {{weatherData.winddirection}}风 {{weatherData.windpower}}级</span>
+              <span class="discription"><wind/>💨 {{weatherData.winddirection}}风 {{weatherData.windpower}}级</span>
               </el-col>
               <el-col :span =6>
-              <span> 💧 {{weatherData.humidity}}%</span>
+              <span class="discription"> 💧 {{weatherData.humidity}}%</span>
               </el-col>
             </el-row>
           </div>
       </el-main>
-      <el-footer>
+      <el-footer class="footer">
         <el-row justify="center">
-          <el-col :span="8">
-            <span>说明</span>
+          <el-col :span="24" >
+            <span>气象数据来源：中央气象台</span>
+          </el-col>
+        </el-row>
+        <el-row justify="center">
+          <el-col :span="24">
+            <span>预报更新时间：每日06、08、12、16、20时</span>
           </el-col>
         </el-row>
       </el-footer>
@@ -159,6 +144,9 @@ onMounted(async()=>{
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 #cccc{
   color:white;
@@ -169,32 +157,36 @@ onMounted(async()=>{
   border: 1px solid #dcdfe6;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
   transition: all 0.3s ease;
+  font-size: clamp(10px,0.8vw,22px);
 }
 :deep(.rounded-input .el-input__wrapper:hover) {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+:deep(.rounded-input .el-input__suffix .el-icon) {
+  display: none;
+}
+:deep(.rounded-input .el-cascader__dropdown) {
+  font-size: 10px;
+}
 
 .tempature{
-  font-size: 80px;
+  font-size: clamp(15px,4vw,80px);
 }
 .weathers{
-  font-size:30px;
-}
-.weatherStatus{
-  font-size:15px;
+  font-size: clamp(10px,2vw,40px);
 }
 .region{
-  font-size:24px;
+  font-size:clamp(10px,1.5vw,40px);
   margin:0 0 0 5px;
   color: #fff;
 }
 
 .reportTime{
-  font-size: 15px;
+  font-size:clamp(10px,0.7vw,20px);
   color: #999;
 }
 .logo {
-  font-size: 30px;
+  font-size:clamp(10px,1.5vw,40px);
   font-weight: bold;
   font-family: 'Segoe UI', 'Arial', sans-serif;
   padding: 10px 20px;
@@ -209,6 +201,7 @@ onMounted(async()=>{
   transition: all 0.3s ease;
   user-select: none;
   cursor: default;
+  white-space: nowrap;
 }
 
 .logo:hover {
@@ -217,18 +210,19 @@ onMounted(async()=>{
     0 6px 12px rgba(0, 0, 0, 0.3),
     inset 0 0 8px rgba(0, 200, 255, 0.4);
 }
-
-
-
-
+.discription{
+  font-size: clamp(10px,1.2vw,1.5vw);
+}
 
 .todayWeather {
   background-color: #98d5f2;
-  width: 50%;
-  height: 30%;
+  width: 45%;
+  min-height: 200px;
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .todayWeather:hover {
@@ -237,10 +231,9 @@ onMounted(async()=>{
 }
 
 .weatherStation {
-  font-size: 22px;
+  font-size: clamp(10px,1.3vw,22px);
   font-weight: bold;
   text-align: center;
-  border-radius: 12px;
   cursor: default;
   transition: all 0.3s ease;
   letter-spacing: 1px;
@@ -248,5 +241,10 @@ onMounted(async()=>{
 }
 .weatherStation:hover {
   transform: scale(1.1);
+}
+.footer{
+  background-color: #aec3db;
+  font-size:clamp(10px,0.7vw,20px);
+  text-align: center;
 }
 </style>
