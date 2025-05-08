@@ -9,8 +9,8 @@
       <template #title>天气首页</template>
     </el-menu-item>
     <el-menu-item index="/about">
-      <el-icon><setting /></el-icon>
-      <template #title>关于我们</template>
+      <el-icon><Location /></el-icon>
+      <template #title>地图查询</template>
     </el-menu-item>
   </el-menu>
 </template>
@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import {
   Menu as IconMenu,
-  Setting,
+  Location
 } from '@element-plus/icons-vue'
 
 </script>

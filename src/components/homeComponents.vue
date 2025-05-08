@@ -112,7 +112,7 @@ const limitChange =async (value) =>{
   await getData(city.value)
 }
 
-const getData = async(city:string) =>{
+const getData = async(city) =>{
   try{
   fullscreenLoading.value = true
   const res = await getWeatherStation(city)
