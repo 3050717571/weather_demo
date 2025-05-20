@@ -3,9 +3,10 @@
     default-active="1"
     class="el-menu-vertical-demo"
     router
+    :collapse="isCollapse"
   >
     <el-menu-item index="/">
-      <el-icon><icon-menu /></el-icon>
+      <el-icon><Sunny /></el-icon>
       <template #title>天气首页</template>
     </el-menu-item>
     <el-menu-item index="/about">
@@ -16,11 +17,13 @@
 </template>
 
 <script lang="ts" setup>
+  import {ref} from "vue"
 import {
-  Menu as IconMenu,
+  Sunny,
   Location
 } from '@element-plus/icons-vue'
 
+const isCollapse = ref(true)
 </script>
 
 <style>

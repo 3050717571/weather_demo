@@ -105,14 +105,14 @@ const formattedTime =computed(() =>{
   return dayjs(weatherData.reporttime).format('HH:mm')
 })
 
-const limitChange =async (value) =>{
+const limitChange =async (value: string[]) =>{
 
   city.value = value[value.length -1]
    console.log('city',city.value)
   await getData(city.value)
 }
 
-const getData = async(city) =>{
+const getData = async(city: string) =>{
   try{
   fullscreenLoading.value = true
   const res = await getWeatherStation(city)

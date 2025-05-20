@@ -6,7 +6,7 @@
 import { onMounted, onUnmounted } from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 
-let map = null;
+let map: any = null;
 
 onMounted(() => {
   window._AMapSecurityConfig = {
@@ -42,7 +42,7 @@ onMounted(() => {
 
       map.addControl(geolocation)
 
-      geolocation.getCurrentPosition((status, result) => {
+      geolocation.getCurrentPosition((status: any, result: any) => {
         if (status === "complete") {
           onComplete(result);
         } else {
