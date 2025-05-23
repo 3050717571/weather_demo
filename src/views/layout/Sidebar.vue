@@ -9,9 +9,13 @@
       <el-icon><Sunny /></el-icon>
       <template #title>天气首页</template>
     </el-menu-item>
-    <el-menu-item index="/about">
+    <el-menu-item index="/map">
       <el-icon><Location /></el-icon>
       <template #title>地图查询</template>
+    </el-menu-item>
+    <el-menu-item index="/ai">
+      <el-icon><Location /></el-icon>
+      <template #title>ai</template>
     </el-menu-item>
   </el-menu>
 </template>

@@ -16,7 +16,15 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+      proxy: {
+      // 把 /api 的请求代理到本地后端服务
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   }
 })
 
