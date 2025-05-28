@@ -10,9 +10,9 @@
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
-    "dev:client": "vite",      
-    "dev:server": "node server/server.js" 
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "vite",
+    "dev:server": "node server/server.js"
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
@@ -21,7 +21,9 @@
     "element-china-area-data": "^6.1.0",
     "element-plus": "^2.9.9",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "vue3-count-to": "^1.1.2",
+    "vue3-countup": "^0.0.4"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.1",

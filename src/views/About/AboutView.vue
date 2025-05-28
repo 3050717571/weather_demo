@@ -1,9 +1,9 @@
 <template>
   <div>
-    <MapComponents/>
+    <MapComponents />
   </div>
 </template>
 
 <script setup lang="ts">
-  import MapComponents from '@/components/mapComponents.vue'
+import MapComponents from '@/components/mapComponents.vue'
 </script>
